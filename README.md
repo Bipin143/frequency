@@ -147,6 +147,35 @@ in `rustfmt.toml`.
 [Rust](https://github.com/rust-lang/rust) code.
 - Alternatively, run `make format-lint` to run both at the same time.
 
+# Run Benchmarking
+
+In order to achieve a certain block time, for example 6 seconds per block,
+there is a limited number of lines of code can be run during that time frame.
+When writing a pallet function, the developer is responsible for calculating its
+computational complexity, which is called **weight**. The process of
+determining that complexity, or simply put, time cost is called benchmarking.
+
+1. Build your Frequency node binary with the `runtime-benchmarks` feature flag:
+
+   ```sh
+   cargo build --release --features runtime-benchmarks
+   ```
+1. Execute the benchmarks using `pallet_msa` as an example:
+   ```sh
+   ./target/release/frequency benchmark pallet \
+    --chain frequency_dev \
+    --execution=wasm \
+    --wasm-execution=compiled \
+    --pallet pallet_msa \
+    --extrinsic "*" \
+    --steps 20 \
+    --repeat 5 \
+    --output ./pallets/msa/src/weights.rs \
+    --template=./.maintain/frame-weight-template.hbs
+   ```
+
+The generated weights will be in the file passed to `--output` parameter.
+
 # Verify Runtime
 
 1. Check out the commit at which the runtime was built.
