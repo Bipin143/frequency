@@ -2,11 +2,10 @@
 
 pipeline {
 
-  agent any
-  //{
-     
-     //label 'benchmark'
-    //  }
+  agent
+      {
+     label 'benchmark'
+     }
    triggers {
         issueCommentTrigger('^\\/run-benchmark.*')
     }
